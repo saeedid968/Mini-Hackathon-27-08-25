@@ -3,7 +3,14 @@ import { Box, Container, Typography, Grid } from "@mui/material";
 
 const AboutUS = () => {
   return (
-    <Box sx={{ backgroundColor: "#121212", py: 8 }}>
+    <Box
+      id="about"
+      sx={{
+        backgroundColor: "#121212",
+        py: 8,
+        scrollMarginTop: { xs: 100, md: 100 },
+      }}
+    >
       <Container>
         <Grid container spacing={6} alignItems="center">
           {/* Left Side: Text */}

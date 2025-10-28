@@ -4,17 +4,21 @@ import {
   Container,
   Typography,
   Card,
-  CardMedia,
+  CardContent,
+  Button,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
-// ==== Styled Components ====
+/* ==== Styled Components ==== */
 const DiscountsContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(8, 0),
-  backgroundColor: "#fff",
+  backgroundColor: "#121212",
   position: "relative",
   overflow: "hidden",
 }));
@@ -22,11 +26,11 @@ const DiscountsContainer = styled(Box)(({ theme }) => ({
 const SectionTitle = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   fontWeight: 700,
-  color: "#121212",
-  marginBottom: theme.spacing(1),
+  color: "white",
+  marginBottom: theme.spacing(0.5), // smaller margin
   fontFamily: "'Playfair Display', serif",
-  position: "relative",
-  "&:after": {
+  fontSize: "2.5rem",
+   "&:after": {
     content: '""',
     display: "block",
     width: "80px",
@@ -35,59 +39,49 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
     margin: "16px auto 0",
     borderRadius: "2px",
   },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.8rem",
+  },
 }));
+
 
 const SectionSubtitle = styled(Typography)(({ theme }) => ({
   textAlign: "center",
-  color: "#666",
-  marginBottom: theme.spacing(6),
-  maxWidth: "800px",
+  color: "#bbb",
+  marginBottom: theme.spacing(2), // smaller margin
+  maxWidth: "500px",
   marginLeft: "auto",
   marginRight: "auto",
   fontFamily: "'Poppins', sans-serif",
+  fontSize: "0.95rem",
 }));
+
 
 const DiscountCard = styled(Card)(({ theme }) => ({
-  height: "100%",
-  borderRadius: "12px",
+  borderRadius: "16px",
   overflow: "hidden",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+  boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
   transition: "all 0.3s ease",
   margin: theme.spacing(0, 1),
-  cursor: "pointer",
+  backgroundColor: "#1E1E1E",
+  color: "#fff",
   "&:hover": {
-    transform: "translateY(-8px)",
-    boxShadow: "0 15px 40px rgba(0,0,0,0.15)",
+    transform: "translateY(-6px)",
+    boxShadow: "0 12px 36px rgba(0,0,0,0.5)",
   },
 }));
 
-const CardMediaWrapper = styled(Box)(({ theme }) => ({
-  position: "relative",
-  overflow: "hidden",
-  height: "420px", // adjust as you like
-  backgroundColor: "#f7f7f7",
-}));
-
-const NavButton = styled(IconButton)(({ theme }) => ({
-  position: "absolute",
-  top: "50%",
-  transform: "translateY(-50%)",
-  backgroundColor: "#fff",
-  color: "#121212",
-  boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-  zIndex: 10,
-  "&:hover": {
-    backgroundColor: "#FFD700",
-  },
-  [theme.breakpoints.down("md")]: {
-    display: "none",
-  },
+const CardIconWrapper = styled(Box)(({ theme }) => ({
+  fontSize: "3rem",
+  color: "#FFD700",
+  marginBottom: theme.spacing(2),
 }));
 
 const CarouselContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   width: "100%",
   overflow: "hidden",
+  touchAction: "pan-y",
 }));
 
 const CarouselTrack = styled(Box)(({ translateX }) => ({
@@ -109,123 +103,185 @@ const CarouselItem = styled(Box)(({ theme }) => ({
   },
 }));
 
-// ==== Discounts Data ====
+const NavButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
+  backgroundColor: "#fff",
+  color: "#121212",
+  boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+  zIndex: 10,
+  "&:hover": {
+    backgroundColor: "#FFD700",
+  },
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
+
+/* ==== Discounts Data ==== */
 const discountData = [
   {
     id: 1,
-    image: "https://kababjees.com/images/discount-3.jpeg",
-    link: "https://kababjees.com", // make image clickable
+    bank: "UBL Bank",
+    offer: "20% OFF on all orders",
+    icon: <AccountBalanceIcon />,
   },
   {
     id: 2,
-    image: "https://kababjees.com/images/ne-ubl.jpg",
-    link: "https://kababjees.com",
+    bank: "Meezan Bank",
+    offer: "15% cashback up to $10",
+    icon: <LocalOfferIcon />,
   },
   {
     id: 3,
-    image: "https://kababjees.com/images/meezan-bank-new-discount.jpeg",
-    link: "https://kababjees.com",
+    bank: "HBL Bank",
+    offer: "Buy 1 Get 1 Free on selected items",
+    icon: <AccountBalanceIcon />,
   },
   {
     id: 4,
-    image: "https://kababjees.com/images/adamjeee-bnk-new.jpg",
-    link: "https://kababjees.com",
+    bank: "MCB Bank",
+    offer: "10% discount every Friday",
+    icon: <LocalOfferIcon />,
   },
   {
     id: 5,
-    image: "https://kababjees.com/images/js-new-bank-discount-kababjees.jpeg",
-    link: "https://kababjees.com",
+    bank: "JS Bank",
+    offer: "Flat $5 off on orders above $30",
+    icon: <AccountBalanceIcon />,
+  },
+  {
+    id: 6,
+    bank: "Adamjee Bank",
+    offer: "Free dessert on orders above $25",
+    icon: <LocalOfferIcon />,
   },
 ];
 
-// ==== Component ====
+/* ==== Component ==== */
 const BankDiscounts = () => {
+  const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerView(1);
-      } else if (window.innerWidth < 1200) {
-        setItemsPerView(2);
-      } else {
-        setItemsPerView(3);
-      }
+      if (window.innerWidth < 768) setItemsPerView(1);
+      else if (window.innerWidth < 1200) setItemsPerView(2);
+      else setItemsPerView(3);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex >= discountData.length - itemsPerView ? 0 : prevIndex + 1
+  const handleNext = () =>
+    setCurrentIndex((prev) =>
+      prev >= discountData.length - itemsPerView ? 0 : prev + 1
     );
-  };
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex <= 0 ? discountData.length - itemsPerView : prevIndex - 1
+  const handlePrev = () =>
+    setCurrentIndex((prev) =>
+      prev <= 0 ? discountData.length - itemsPerView : prev - 1
     );
-  };
 
   const translateX = -(currentIndex * (100 / itemsPerView));
 
+  useEffect(() => {
+    const interval = setInterval(handleNext, 3000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
   return (
-    <DiscountsContainer id="discounts" sx={{backgroundColor: "#121212" }}>
+    <DiscountsContainer id="discounts">
       <Container maxWidth="lg">
-        <SectionTitle variant="h2" sx={{color:'white'}}>BANK DISCOUNTS</SectionTitle>
-        <SectionSubtitle variant="h6" sx={{color:'	#839599ff'}}>
-          Save more with exclusive bank offers at Kababjees
-        </SectionSubtitle>
+        <SectionTitle variant="h2">BANK DISCOUNTS</SectionTitle>
+        <SectionSubtitle>
+          Save more with exclusive bank offers
+        </SectionSubtitle>  
 
         <CarouselContainer>
-          <NavButton onClick={handlePrev} sx={{ left: 0, }} aria-label="Previous offers">
+          <NavButton onClick={handlePrev} sx={{ left: 0 }}>
             <ChevronLeftIcon />
           </NavButton>
 
           <CarouselTrack translateX={translateX}>
             {discountData.map((offer) => (
               <CarouselItem key={offer.id}>
-                <a href={offer.link} target="_blank" rel="noopener noreferrer">
-                  <DiscountCard>
-                    <CardMediaWrapper>
-                      <CardMedia
-                        component="img"
-                        image={offer.image}
-                        alt="discount"
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover", // ensures it covers nicely
-                        }}
-                      />
-                    </CardMediaWrapper>
-                  </DiscountCard>
-                </a>
+                <DiscountCard>
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      textAlign: "center",
+                      height: "100%",
+                    }}
+                  >
+                    <CardIconWrapper>{offer.icon}</CardIconWrapper>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        fontFamily: "'Playfair Display', serif",
+                      }}
+                    >
+                      {offer.bank}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        mt: 1,
+                        fontFamily: "'Poppins', sans-serif",
+                        color: "#ddd",
+                      }}
+                    >
+                      {offer.offer}
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        mt: 2,
+                        borderColor: "#FFD700",
+                        color: "#FFD700",
+                        fontWeight: 600,
+                        "&:hover": {
+                          backgroundColor: "rgba(255,215,0,0.1)",
+                          borderColor: "#FFC400",
+                          color: "#FFC400",
+                        },
+                      }}
+                    >
+                      Redeem Offer
+                    </Button>
+                  </CardContent>
+                </DiscountCard>
               </CarouselItem>
             ))}
           </CarouselTrack>
 
-          <NavButton onClick={handleNext} sx={{ right: 0 }} aria-label="Next offers">
+          <NavButton onClick={handleNext} sx={{ right: 0 }}>
             <ChevronRightIcon />
           </NavButton>
         </CarouselContainer>
 
         {/* Dots Indicator */}
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          {Array.from({ length: Math.ceil(discountData.length / itemsPerView) }).map((_, index) => (
+          {Array.from({
+            length: Math.ceil(discountData.length / itemsPerView),
+          }).map((_, index) => (
             <Box
               key={index}
               sx={{
-                width: 12,
-                height: 12,
+                width: 10,
+                height: 10,
                 borderRadius: "50%",
-                backgroundColor: currentIndex === index * itemsPerView ? "#FFD700" : "#ddd",
-                margin: "0 4px",
+                backgroundColor:
+                  currentIndex === index * itemsPerView ? "#FFD700" : "#555",
+                mx: 0.5,
                 cursor: "pointer",
-                transition: "background-color 0.3s ease",
+                transition: "all 0.3s ease",
               }}
               onClick={() => setCurrentIndex(index * itemsPerView)}
             />

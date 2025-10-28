@@ -13,10 +13,12 @@ import HeroSection from "./Components/HeroSection/Hero";
 import AboutUsPage from "./Components/AboutUS/AboutUs";
 import OurSpecialities from "./Components/OurSpeciality/OurSpeciality";
 import BankDiscounts from "./Components/BankDis/BankDis";
-import ReviewsAndLocations from "./Components/ReviewLoc/ReviewLoc";
 import Admin from "./Screens/Admin/Admin";
 import AddBranch from "./Screens/Admin/Branches/AddBranches";
 import BranchList from "./Screens/Admin/Branches/ListBranches";
+import ContactPage from "./Components/ContactUS/Contactus";
+import Reviews from "./Components/Review/Review";
+import Locations from "./Components/Location/Location";
 
 function App() {
   useAuthListener();
@@ -43,8 +45,14 @@ function App() {
               <div id="bank">
                 <BankDiscounts />
               </div>
+              <div id="review">
+                <Reviews />
+              </div>
               <div id="location">
-                <ReviewsAndLocations />
+                <Locations />
+              </div>
+              <div id="contact">
+                <ContactPage />
               </div>
               <Footer />
             </>

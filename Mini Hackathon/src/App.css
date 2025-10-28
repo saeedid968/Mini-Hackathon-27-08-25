@@ -1,0 +1,4 @@
+/* in your global CSS or sx for each section */
+#about, #menu, #discounts, #reviews, #location, #contact {
+  scroll-margin-top: 0px; /* adjust according to navbar height */
+}

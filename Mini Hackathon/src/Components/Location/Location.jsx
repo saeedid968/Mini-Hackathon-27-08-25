@@ -1,0 +1,191 @@
+// src/components/Locations.jsx
+import React from "react";
+import { Box, Container, Typography } from "@mui/material";
+import { styled } from "@mui/system";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+/* --- Styled Components --- */
+const SectionContainer = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(8, 0),
+  backgroundColor: "#121212",
+  color: "white",
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(5, 0),
+  },
+}));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  textAlign: "center",
+  fontWeight: 700,
+  color: "white",
+  marginBottom: theme.spacing(0.5), // smaller margin
+  fontFamily: "'Playfair Display', serif",
+  fontSize: "2.5rem",
+   "&:after": {
+    content: '""',
+    display: "block",
+    width: "80px",
+    height: "4px",
+    backgroundColor: "#FFD700",
+    margin: "16px auto 0",
+    borderRadius: "2px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.8rem",
+  },
+}));
+
+
+const SectionSubtitle = styled(Typography)(({ theme }) => ({
+  textAlign: "center",
+  color: "#bbb",
+  marginBottom: theme.spacing(2), // smaller margin
+  maxWidth: "500px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: "0.95rem",
+}));
+
+const LocationCard = styled(Box)(({ theme }) => ({
+  position: "relative",
+  borderRadius: "12px",
+  overflow: "hidden",
+  cursor: "pointer",
+  height: "260px",
+  width: "320px",
+  boxShadow: "0 8px 25px rgba(0,0,0,0.25)",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  backgroundColor: "#1c1c1c",
+  "&:hover": {
+    transform: "translateY(-5px)",
+    boxShadow: "0 16px 35px rgba(0,0,0,0.35)",
+  },
+  [theme.breakpoints.down("md")]: {
+    width: "280px",
+    height: "220px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "90vw",
+    height: "200px",
+  },
+}));
+
+const LocationImage = styled("img")(({ theme }) => ({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  objectPosition: "center center",
+  display: "block",
+  transition: "transform 0.4s ease",
+  "&:hover": { transform: "scale(1.05)" },
+}));
+
+const LocationOverlay = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  background: "rgba(0,0,0,0.6)",
+  color: "#fff",
+  padding: theme.spacing(1.5),
+  display: "flex",
+  alignItems: "center",
+  fontWeight: 600,
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: "1rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "0.9rem",
+    padding: theme.spacing(1),
+  },
+}));
+
+/* --- Data --- */
+const locationsData = [
+  {
+    id: 1,
+    name: "Highway Branch",
+    image: "https://kababjees.com/images/highway%20pic2.jpg",
+    link: "https://maps.google.com",
+  },
+  {
+    id: 2,
+    name: "Do Darya",
+    image: "https://kababjees.com/images/dodarya1.jpg",
+    link: "https://maps.google.com",
+  },
+  {
+    id: 3,
+    name: "Shaheed e Millat",
+    image: "https://kababjees.com/images/s9millat%20pic1.jpg",
+    link: "https://maps.google.com",
+  },
+  {
+    id: 4,
+    name: "Hyderabad Branch",
+    image: "https://kababjees.com/images/hyderabad%202.jpg",
+    link: "https://maps.google.com",
+  },
+  {
+    id: 5,
+    name: "Lahore Branch",
+    image: "https://kababjees.com/images/lahore.jpg",
+    link: "https://maps.google.com",
+  },
+  {
+    id: 6,
+    name: "Falcon Malir",
+    image: "https://kababjees.com/images/download.jpg",
+    link: "https://maps.google.com",
+  },
+];
+
+/* --- Component --- */
+const Locations = () => {
+  return (
+    <SectionContainer id="location">
+      <Container maxWidth="lg">
+        <SectionTitle variant="h3">OUR LOCATIONS</SectionTitle>
+        <SectionSubtitle variant="h6">
+          Visit us at any of our branches across the city
+        </SectionSubtitle>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: { xs: 3, sm: 4 },
+          }}
+        >
+          {locationsData.map((location) => (
+            <a
+              key={location.id}
+              href={location.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <LocationCard>
+                <LocationImage src={location.image} alt={location.name} />
+                <LocationOverlay>
+                  <LocationOnIcon
+                    sx={{
+                      color: "#FFD700",
+                      mr: 1,
+                      fontSize: { xs: "1.1rem", sm: "1.3rem" },
+                    }}
+                  />
+                  {location.name}
+                </LocationOverlay>
+              </LocationCard>
+            </a>
+          ))}
+        </Box>
+      </Container>
+    </SectionContainer>
+  );
+};
+
+export default Locations;
